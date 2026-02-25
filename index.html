@@ -19,16 +19,12 @@
             margin: 0; font-family: 'Outfit', sans-serif;
             background: linear-gradient(135deg, var(--azul-tinaco) 0%, #26d0ce 100%);
             background-attachment: fixed; color: #fff; overflow-x: hidden;
-            box-sizing: border-box;
         }
-
-        *, *:before, *:after { box-sizing: inherit; }
 
         .glass-card {
             background: var(--glass); backdrop-filter: blur(25px);
             border-radius: 30px; border: 1px solid rgba(255,255,255,0.2);
             box-shadow: 0 25px 50px rgba(0,0,0,0.3); padding: 30px;
-            width: 100%; max-width: 90%;
         }
 
         .screen { display: none; min-height: 100vh; padding: 40px 20px; box-sizing: border-box; }
@@ -42,36 +38,27 @@
         .acc-header { padding: 15px; cursor: pointer; display: flex; justify-content: space-between; font-weight: bold; background: rgba(255,255,255,0.1); }
         .acc-content { padding: 0 15px; max-height: 0; transition: 0.3s ease-out; font-size: 0.9rem; line-height: 1.5; color: #eee; }
 
-        /* Formulario */
+        /* Inputs */
         .form-group { width: 100%; margin-bottom: 15px; text-align: left; }
         input, select {
-            width: 100%; padding: 12px; margin-top: 5px; border-radius: 12px; border: none; font-family: 'Outfit';
+            width: 100%; padding: 12px; margin-top: 5px; border-radius: 12px; border: none; box-sizing: border-box;
         }
         .disclaimer { font-size: 0.75rem; color: #ccc; margin-top: 5px; line-height: 1.2; }
 
-        /* Botones */
         .btn-action {
             background: var(--rojo-tinaco); color: white; border: none; padding: 15px 25px;
             border-radius: 20px; cursor: pointer; font-weight: 700; transition: 0.3s; 
             width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
-            text-transform: uppercase; text-decoration: none; font-size: 0.9rem;
+            text-transform: uppercase; text-decoration: none;
         }
         .btn-action:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        
-        /* Contenedores de Votación */
+
         .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; max-width: 1200px; }
         .img-container { width: 100%; height: 180px; background: rgba(0,0,0,0.3); border-radius: 15px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .img-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .item-desc { font-size: 0.85rem; color: #ddd; margin-bottom: 15px; height: 40px; overflow: hidden; }
-
-        /* Pantalla de Resultados */
-        .chart-wrapper { width: 100%; max-width: 450px; margin: 20px auto; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px; }
 
         footer { text-align: center; padding: 40px; background: rgba(0,0,0,0.3); margin-top: 40px; font-size: 0.85rem; }
         footer img { width: 60px; border-radius: 50%; border: 2px solid #fff; margin-bottom: 10px; }
-
-        .hint-text { color: var(--oro); font-weight: bold; margin: 15px 0; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
     </style>
 </head>
 <body>
@@ -80,29 +67,38 @@
     <div class="glass-card" style="max-width: 700px; text-align: center;">
         <h2 style="font-weight: 300; letter-spacing: 2px;">ALCALDÍA DE TINACO</h2>
         <h1 style="font-size: 2.5rem; margin: 10px 0;">Identidad Natural</h1>
-        <p>Votación ciudadana para la elección de nuestro Símbolo Natural.</p>
+        <p>Participa en la elección de los símbolos de nuestra tierra.</p>
         
         <div class="accordion">
             <div class="acc-item">
                 <div class="acc-header" onclick="toggleAcc(this)">ANTECEDENTES DEL PROYECTO <i class="fas fa-chevron-down"></i></div>
                 <div class="acc-content">
                     <p>El Municipio Tinaco busca fortalecer su identidad local a través de la elección democrática de su Ave y Flor emblemática. Este proceso permite que el ciudadano se apropie de su patrimonio natural y reconozca la biodiversidad que nos rodea.</p>
+                    <div style="padding: 20px; text-align: left; font-size: 0.9rem;">
+                        <p>🔰 <b>Comisión de Preservación:</b> Iniciamos con una comisión técnica para identificar especies que representan nuestras fortalezas.</p>
+                        <p>🔸 <b>Consulta Popular:</b> Realizamos encuestas en 40 sectores (urbanos y rurales) con una muestra de 226 personas.</p>
+                        <p>🔸 <b>Árbol Emblemático:</b> El <b>Roble Criollo</b> fue el ganador indiscutible por su fortaleza y belleza.</p>
+                        <p>🔸 <b>Sobre la Flor:</b> Se detectó que muchas flores de nuestros jardines no son autóctonas. Por eso, abrimos esta nueva consulta técnica.</p>
+                        <p>🔸 <b>Sobre el Ave:</b> Aunque la Paraulata fue mencionada, ya representa a otro estado. Buscamos autenticidad y diferenciación para Tinaco.</p>
+                        <p>¡Tu opinión hoy definirá nuestra identidad para las futuras generaciones!</p>
+                    </div>
                 </div>
             </div>
         </div>
+
         <br>
         <button class="btn-action" onclick="nextScreen('screen-form')">EMPEZAR VOTACIÓN</button>
     </div>
 </section>
 
 <section id="screen-form" class="screen">
-    <div class="glass-card" style="max-width: 500px;">
+    <div class="glass-card" style="max-width: 500px; width: 90%;">
         <h2 style="text-align: center;">Registro</h2>
         <div class="form-group"><label>Cédula *</label><input type="number" id="v-ci"></div>
         <div class="form-group"><label>Nombre Completo *</label><input type="text" id="v-nombre"></div>
         <div class="form-group"><label>Correo Electrónico *</label>
             <input type="email" id="v-email" placeholder="ejemplo@correo.com">
-            <p class="disclaimer">Se usará para dar a conocer los resultados y registrarle en la Revista Epistecnología.</p>
+            <p class="disclaimer">Se usará para dar a conocer los resultados y registrarle en la Revista de divulgación educativa, científica y cultural Epistecnología.</p>
         </div>
         <div style="display: flex; gap:10px;">
             <div class="form-group"><label>Edad</label><input type="number" id="v-edad"></div>
@@ -114,26 +110,26 @@
 </section>
 
 <section id="screen-selector" class="screen">
-    <h2 style="text-align: center; margin-bottom: 20px;">Seleccione Categoría</h2>
+    <h2 style="text-align: center;">Seleccione Categoría</h2>
     <div class="grid-cards" style="max-width: 700px;">
         <div class="glass-card" style="text-align:center; cursor:pointer;" onclick="renderVotacion('aves')">
             <i class="fas fa-feather-alt fa-4x" style="color:var(--oro)"></i><h3>AVES</h3>
-            <div id="check-ave" style="display:none; color:#00ff00; font-weight: bold;">✅ SELECCIONADO</div>
+            <div id="check-ave" style="display:none; color:#00ff00;">✅ ELEGIDO</div>
         </div>
         <div class="glass-card" style="text-align:center; cursor:pointer;" onclick="renderVotacion('flores')">
             <i class="fas fa-seedling fa-4x" style="color:var(--oro)"></i><h3>FLORES</h3>
-            <div id="check-flor" style="display:none; color:#00ff00; font-weight: bold;">✅ SELECCIONADO</div>
+            <div id="check-flor" style="display:none; color:#00ff00;">✅ ELEGIDO</div>
         </div>
     </div>
 </section>
 
 <section id="screen-voting" class="screen">
-    <h2 id="vote-title" style="text-align: center;"></h2>
+    <h2 id="vote-title"></h2>
     <div class="grid-cards" id="container-voting"></div>
 </section>
 
 <section id="screen-thanks" class="screen">
-    <div class="glass-card" style="max-width: 500px; text-align: center; overflow: hidden;">
+    <div class="glass-card" style="max-width: 500px; text-align: center;">
         <div id="processing-box">
             <i class="fas fa-spinner fa-spin fa-3x"></i>
             <h3>Enviando tu voto...</h3>
@@ -141,15 +137,10 @@
         <div id="subscribe-box" style="display:none;">
             <i class="fas fa-check-circle fa-4x" style="color:#27ae60"></i>
             <h2>¡Voto registrado!</h2>
-            <p>Para ver los resultados en vivo y apoyar el proyecto:</p>
-            
-            <p class="hint-text">1. Suscríbete al canal <br> 2. Vuelve aquí para ver resultados</p>
-            
-            <div style="padding: 0 10px;">
-                <a href="https://www.youtube.com/@epistecnologia?sub_confirmation=1" target="_blank" class="btn-action" style="background:#ff0000;" onclick="showResultsBtn()">
-                    <i class="fab fa-youtube"></i> SUSCRIBIRSE
-                </a>
-            </div>
+            <p>Para ver los resultados en vivo y apoyar el proyecto, suscríbete a Epistecnología:</p>
+            <a href="https://www.youtube.com/@epistecnologia?sub_confirmation=1" target="_blank" class="btn-action" style="background:#ff0000;" onclick="showResultsBtn()">
+                <i class="fab fa-youtube"></i> SUSCRIBIRSE
+            </a>
             <br>
             <button id="btn-ver-resultados" class="btn-action" style="background:var(--azul-tinaco); display:none;" onclick="mostrarResultadosFinales()">
                 VER RESULTADOS EN VIVO
@@ -159,43 +150,42 @@
 </section>
 
 <section id="screen-results" class="screen">
-    <div class="glass-card" style="max-width: 1000px; text-align:center;">
-        <h1 style="color: var(--oro);">Escrutinio Real</h1>
-        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px;">
-            <div class="chart-wrapper"><canvas id="chartAves"></canvas></div>
-            <div class="chart-wrapper"><canvas id="chartFlores"></canvas></div>
+    <div class="glass-card" style="width: 95%; max-width: 1000px; text-align:center;">
+        <h1>Escrutinio en Tiempo Real</h1>
+        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:30px;">
+            <div style="width:300px;"><canvas id="chartAves"></canvas></div>
+            <div style="width:300px;"><canvas id="chartFlores"></canvas></div>
         </div>
-        <br><button class="btn-action" style="max-width: 250px; margin:auto;" onclick="location.reload()">VOLVER AL INICIO</button>
+        <br><button class="btn-action" style="width:200px; margin:auto;" onclick="location.reload()">INICIO</button>
     </div>
 </section>
 
 <footer>
     <img src="https://i.ibb.co/hFRyKrxY/logo-epist-v3-1x1-c.png" alt="Logo">
-    <p><b>ALCALDÍA DEL MUNICIPIO TINACO</b></p>
     <p>Desarrollado por <a href="https://epistecnologia.com/" target="_blank" style="color:var(--oro)">Epistecnología</a></p>
-    <p>Por: <a href="https://epistecnologia.com/@henry" target="_blank" style="color:var(--oro)">Henry Adolfo Márquez Mercado</a></p>
+    <p>Una plataforma y revista de divulgación científica y culturas, del tinaquero <a href="https://epistecnologia.com/@henry" target="_blank" style="color:var(--oro)">Henry Adolfo Márquez Mercado</a></p>
 </footer>
 
 <script>
     const S_URL = "https://rccwtttftdgpbzkromux.supabase.co";
-    const S_KEY = "TU_KEY_AQUI"; 
+    const S_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjY3d0dHRmdGRncGJ6a3JvbXV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwMzk0MDQsImV4cCI6MjA4NzYxNTQwNH0.W1qs1oF3IbVM7Uph2wKKIJs-W09uNwwhJ2TFFpdT3n4"; 
     const _supabase = supabase.createClient(S_URL, S_KEY);
 
     const dataAves = [
-        {nombre: 'Carpintero', img: 'https://i.ibb.co/kg3YG0dP/large.jpg', desc: 'Ingeniero forestal que controla plagas en los árboles.'},
-        {nombre: 'Sangre toro', img: 'https://i.ibb.co/NnGg1Q86/900.jpg', desc: 'Ave de plumaje vibrante, símbolo de vitalidad llanera.'},
-        {nombre: 'CristoFue', img: 'https://i.ibb.co/nNLYqT3M/900.jpg', desc: 'Vigilante adaptable que habita en nuestros patios y plazas.'},
-        {nombre: 'El Gaban', img: 'https://i.ibb.co/HTL8cxgG/43dac00274fc4fe2e1f4ced2ce7f8459.jpg', desc: 'La máxima elegancia de los esteros y humedales de Tinaco.'},
-        {nombre: 'Alcaravan', img: 'https://inaturalist-open-data.s3.amazonaws.com/photos/135057906/large.jpeg', desc: 'Guardián nocturno conocido por su canto de alerta.'}
+        {nombre: 'Carpintero', img: 'https://i.ibb.co/kg3YG0dP/large.jpg', desc: 'Ingeniero forestal natural.'},
+        {nombre: 'Sangre toro', img: 'https://i.ibb.co/NnGg1Q86/900.jpg', desc: 'Vitalidad y pasión llanera.'},
+        {nombre: 'CristoFue', img: 'https://i.ibb.co/nNLYqT3M/900.jpg', desc: 'El vigilante de nuestros patios.'},
+        {nombre: 'El Gaban', img: 'https://i.ibb.co/HTL8cxgG/43dac00274fc4fe2e1f4ced2ce7f8459.jpg', desc: 'Elegancia de los esteros.'},
+        {nombre: 'Alcaravan', img: 'https://inaturalist-open-data.s3.amazonaws.com/photos/135057906/large.jpeg', desc: 'Guardián de la sabana.'}
     ];
 
     const dataFlores = [
-        {nombre: 'Lirio Sabanero', img: 'https://i.ibb.co/Zz4Rwj1j/Lirio-Sabanero.jpg', desc: 'Flor blanca de gran resiliencia que brota tras las lluvias.'},
-        {nombre: 'Ruellia', img: 'https://i.ibb.co/Sw52WZbc/960px-Ruellia-simplex-02.jpg', desc: 'Conocida como Noelia, embellece los jardines tinaqueros.'},
-        {nombre: 'Bototo', img: 'https://i.ibb.co/KzzmNF9b/Bototo.jpg', desc: 'El oro del llano, sus flores amarillas anuncian el verano.'},
-        {nombre: 'Nazareno', img: 'https://i.ibb.co/wmfqWGG/shutterstock-1056956174.jpg', desc: 'Flor púrpura vinculada a la espiritualidad y la tradición.'},
-        {nombre: 'Cimbapotro', img: 'https://i.ibb.co/DDxwXZbB/floripondio.jpg', desc: 'Especie clave de nuestro ecosistema fluvial.'},
-        {nombre: 'Clavelina', img: 'https://i.ibb.co/KpP5FFb3/clavelina-rebecca-niver-z0txuuculfq-unsplash-946793cd-1200x630.jpg', desc: 'Orgullo ornamental de fragancia y colores únicos.'}
+        {nombre: 'Lirio Sabanero', img: 'https://i.ibb.co/Zz4Rwj1j/Lirio-Sabanero.jpg', desc: 'Resiliencia llanera.'},
+        {nombre: 'Ruellia', img: 'https://i.ibb.co/Sw52WZbc/960px-Ruellia-simplex-02.jpg', desc: 'Belleza silvestre.'},
+        {nombre: 'Bototo', img: 'https://i.ibb.co/KzzmNF9b/Bototo.jpg', desc: 'El oro del llano.'},
+        {nombre: 'Nazareno', img: 'https://i.ibb.co/wmfqWGG/shutterstock-1056956174.jpg', desc: 'Espiritualidad púrpura.'},
+        {nombre: 'Cimbapotro', img: 'https://i.ibb.co/DDxwXZbB/floripondio.jpg', desc: 'Esencia del ecosistema.'},
+        {nombre: 'Clavelina', img: 'https://i.ibb.co/KpP5FFb3/clavelina-rebecca-niver-z0txuuculfq-unsplash-946793cd-1200x630.jpg', desc: 'Orgullo ornamental.'}
     ];
 
     let userVoto = { ci: '', nombre: '', email: '', ave: null, flor: null };
@@ -222,15 +212,14 @@
     function renderVotacion(tipo) {
         const container = document.getElementById('container-voting');
         const lista = tipo === 'aves' ? dataAves : dataFlores;
-        document.getElementById('vote-title').innerText = "ELIGE TU " + (tipo === 'aves' ? 'AVE' : 'FLOR');
+        document.getElementById('vote-title').innerText = "ELIGE TU " + tipo.toUpperCase();
         container.innerHTML = '';
         lista.forEach(item => {
             const card = document.createElement('div');
             card.className = "glass-card";
             card.innerHTML = `
                 <div class="img-container"><img src="${item.img}"></div>
-                <h3 style="color:var(--oro); margin: 15px 0 5px;">${item.nombre}</h3>
-                <p class="item-desc">${item.desc}</p>
+                <h3>${item.nombre}</h3>
                 <button class="btn-action" onclick="setVoto('${tipo}', '${item.nombre}')">SELECCIONAR</button>
             `;
             container.appendChild(card);
@@ -285,34 +274,17 @@
         const avesMap = counts(data || [], 'voto_ave');
         const floresMap = counts(data || [], 'voto_flor');
 
-        const chartConfig = (ctx, label, labels, values) => {
-            new Chart(ctx, {
-                type: ctx.id === 'chartAves' ? 'doughnut' : 'bar',
-                data: { 
-                    labels: labels, 
-                    datasets: [{ 
-                        label: 'Votos',
-                        data: values, 
-                        backgroundColor: ['#ffd700','#ff4b2b','#1a2980','#27ae60','#8e44ad', '#f39c12'] 
-                    }] 
-                },
-                options: { 
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { labels: { color: '#fff', font: { size: 14, weight: 'bold' } } },
-                        title: { display: true, text: label, color: '#fff', font: { size: 18 } }
-                    },
-                    scales: ctx.id === 'chartFlores' ? { 
-                        y: { ticks: { color: '#fff', font: { size: 12 } }, grid: { color: 'rgba(255,255,255,0.1)' } },
-                        x: { ticks: { color: '#fff', font: { size: 12 } } }
-                    } : {}
-                }
-            });
-        };
+        new Chart(document.getElementById('chartAves'), {
+            type: 'doughnut',
+            data: { labels: Object.keys(avesMap), datasets: [{ data: Object.values(avesMap), backgroundColor: ['#1a2980','#ff0000','#ffd700','#27ae60','#8e44ad'] }] },
+            options: { plugins: { title: { display: true, text: 'Votos Aves', color: '#fff' } } }
+        });
 
-        chartConfig(document.getElementById('chartAves'), 'Aves más votadas', Object.keys(avesMap), Object.values(avesMap));
-        chartConfig(document.getElementById('chartFlores'), 'Flores más votadas', Object.keys(floresMap), Object.values(floresMap));
+        new Chart(document.getElementById('chartFlores'), {
+            type: 'bar',
+            data: { labels: Object.keys(floresMap), datasets: [{ label: 'Votos', data: Object.values(floresMap), backgroundColor: '#ffd700' }] },
+            options: { scales: { y: { ticks: { color: '#fff' } }, x: { ticks: { color: '#fff' } } } }
+        });
     }
 </script>
 </body>
