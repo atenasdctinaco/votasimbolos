@@ -333,6 +333,15 @@
             }
         });
     }
+    // Acceso para gestores: Si presionan la tecla "A" mayúscula en el inicio
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'A' && document.getElementById('screen-intro').classList.contains('active')) {
+            const pass = prompt("Acceso Administrativo. Ingrese contraseña:");
+            if(pass === "tinaco2026") { // Cambia esta clave
+                mostrarResultadosFinales();
+            }
+        }
+    });
 </script>
 </body>
 </html>
