@@ -57,7 +57,7 @@
         
         .zoom-btn {
             position: absolute; top: 10px; right: 10px; background: var(--rojo-tinaco);
-            color: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer;
+            color: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; z-index: 10;
         }
 
         .btn-action {
@@ -69,15 +69,14 @@
         .btn-action:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
         .btn-action:disabled { background: #555; cursor: not-allowed; opacity: 0.7; }
 
-        /* --- FOOTER ESTILIZADO --- */
+        /* --- FOOTER --- */
         footer {
             text-align: center; padding: 50px 20px; font-size: 0.9rem; 
-            background: rgba(0,0,0,0.2); margin-top: 50px;
+            background: rgba(0,0,0,0.3); margin-top: 50px;
         }
-        footer img { width: 60px; height: 60px; margin-bottom: 15px; border-radius: 50%; border: 2px solid var(--blanco); }
+        .footer-logo { width: 80px; height: 80px; margin-bottom: 15px; border-radius: 50%; border: 2px solid white; }
         footer a { color: #ffd700; text-decoration: none; font-weight: 700; }
-        footer a:hover { text-decoration: underline; }
-        footer p { max-width: 800px; margin: 10px auto; line-height: 1.6; opacity: 0.9; }
+        footer p { max-width: 800px; margin: 10px auto; line-height: 1.6; }
 
         .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; width: 100%; max-width: 1200px; padding-bottom: 50px;}
     </style>
@@ -88,7 +87,7 @@
     <div class="glass-card" style="max-width: 750px; padding: 40px; text-align: center;">
         <h2 style="letter-spacing: 3px; font-weight: 300;">ALCALDÍA DE TINACO</h2>
         <h1 style="font-size: 2.8rem; margin: 10px 0;">Identidad Natural</h1>
-        <p>Proceso de participación ciudadana para la elección de símbolos municipales.</p>
+        <p>Votación ciudadana para la elección de nuestros Símbolos Naturales.</p>
         <br>
         <button class="btn-action" onclick="nextScreen('screen-form')">EMPEZAR VOTACIÓN</button>
     </div>
@@ -96,19 +95,19 @@
 
 <section id="screen-form" class="screen">
     <div class="glass-card" style="max-width: 550px; padding: 35px; width: 90%;">
-        <h2 style="text-align: center; margin-bottom: 20px;">Registro de Votante</h2>
-        <div class="form-group"><label>Cédula *</label><input type="number" id="v-ci" placeholder="Solo números"></div>
+        <h2 style="text-align: center; margin-bottom: 20px;">Datos del Votante</h2>
+        <div class="form-group"><label>Cédula de Identidad *</label><input type="number" id="v-ci" placeholder="Ej: 12345678"></div>
         <div class="form-group"><label>Nombre Completo *</label><input type="text" id="v-nombre"></div>
         <div class="row">
             <div class="col-short"><label>Edad *</label><input type="number" id="v-edad"></div>
             <div class="col-wide"><label>Género *</label><select id="v-genero"><option value="F">Femenino</option><option value="M">Masculino</option><option value="O">Otro</option></select></div>
         </div>
-        <div class="form-group"><label>Sector *</label><input type="text" id="v-sector"></div>
+        <div class="form-group"><label>Sector de Residencia *</label><input type="text" id="v-sector" placeholder="Nombre de su comunidad"></div>
         <div class="form-group">
             <label>WhatsApp (Opcional)</label>
             <div class="phone-input">
                 <select id="v-country"><option value="+58" selected>🇻🇪 +58</option></select>
-                <input type="tel" id="v-ws">
+                <input type="tel" id="v-ws" placeholder="Número">
             </div>
         </div>
         <button class="btn-action" onclick="validateForm()">CONTINUAR</button>
@@ -116,14 +115,15 @@
 </section>
 
 <section id="screen-selector" class="screen">
+    <h2 style="margin-bottom:30px;">Selecciona una Categoría</h2>
     <div class="grid-cards" style="max-width: 800px;">
         <div class="glass-card" style="padding: 40px; text-align: center; cursor: pointer;" onclick="renderVotacion('aves')">
             <i class="fas fa-feather-alt fa-5x"></i><h3>AVES</h3>
-            <div id="check-ave" style="display:none; color: #00ff00;">✅ VOTADO</div>
+            <div id="check-ave" style="display:none; color: #00ff00; font-weight: bold;">✅ SELECCIONADO</div>
         </div>
         <div class="glass-card" style="padding: 40px; text-align: center; cursor: pointer;" onclick="renderVotacion('flores')">
             <i class="fas fa-seedling fa-5x"></i><h3>FLORES</h3>
-            <div id="check-flor" style="display:none; color: #00ff00;">✅ VOTADO</div>
+            <div id="check-flor" style="display:none; color: #00ff00; font-weight: bold;">✅ SELECCIONADO</div>
         </div>
     </div>
 </section>
@@ -135,17 +135,17 @@
 
 <section id="screen-final" class="screen">
     <div class="glass-card" style="max-width: 550px; padding: 40px; text-align: center;">
-        <h2 style="margin-bottom: 20px;">Confirmar Participación</h2>
-        <p>Para procesar su voto, suscríbase a nuestro canal de apoyo:</p>
+        <h2 style="margin-bottom: 20px;">Confirmar Voto</h2>
+        <p>Para validar su participación, suscríbase al canal de Epistecnología:</p>
         <br>
-        <div style="max-width: 300px; margin: auto;">
-            <a href="https://www.youtube.com/@epistecnologia?sub_confirmation=1" target="_blank" class="btn-action" style="background: #ff0000; text-decoration: none; padding: 12px;" onclick="unlockBtn()">
+        <div style="max-width: 250px; margin: auto;">
+            <a href="https://www.youtube.com/@epistecnologia?sub_confirmation=1" target="_blank" class="btn-action" style="background: #ff0000; text-decoration: none;" onclick="unlockBtn()">
                 <i class="fab fa-youtube"></i> SUSCRIBIRSE
             </a>
         </div>
         <br>
         <button id="finish-v" class="btn-action" disabled onclick="enviarASupabase()">
-            <i class="fas fa-cloud-upload-alt"></i> FINALIZAR MI VOTO
+            <i class="fas fa-check-circle"></i> FINALIZAR MI VOTO
         </button>
     </div>
 </section>
@@ -157,15 +157,15 @@
             <div style="width: 400px;"><canvas id="chartAves"></canvas></div>
             <div style="width: 400px;"><canvas id="chartFlores"></canvas></div>
         </div>
-        <br><button class="btn-action" style="max-width: 200px; margin: auto;" onclick="location.reload()">NUEVA VOTACIÓN</button>
+        <br><button class="btn-action" style="max-width: 200px; margin: auto;" onclick="location.reload()">INICIO</button>
     </div>
 </section>
 
 <footer>
-    <img src="https://i.ibb.co/hFRyKrxY/logo-epist-v3-1x1-c.png" alt="Logo Epistecnología">
+    <img src="https://i.ibb.co/hFRyKrxY/logo-epist-v3-1x1-c.png" class="footer-logo" alt="Logo">
     <p><b>ALCALDÍA DEL MUNICIPIO TINACO</b></p>
     <p>Sistema desarrollado por <a href="https://epistecnologia.com/" target="_blank">Epistecnología</a>.</p>
-    <p>Plataforma y revista internacional de divulgación científica y cultural desarrollada por el tinaquero <a href="https://epistecnologia.com/@henry" target="_blank">Henry Adolfo Márquez Mercado</a>.</p>
+    <p>Plataforma desarrollada por el tinaquero <a href="https://epistecnologia.com/@henry" target="_blank">Henry Adolfo Márquez Mercado</a>.</p>
 </footer>
 
 <div id="image-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:3000; align-items:center; justify-content:center;" onclick="this.style.display='none'">
@@ -173,12 +173,14 @@
 </div>
 
 <script>
-    // --- CONFIGURACIÓN SUPABASE ---
-    const SUPABASE_URL = "https://rccwtttftdgpbzkromux.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjY3d0dHRmdGRncGJ6a3JvbXV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwMzk0MDQsImV4cCI6MjA4NzYxNTQwNH0.W1qs1oF3IbVM7Uph2wKKIJs-W09uNwwhJ2TFFpdT3n4"; // <--- IMPORTANTE
-    const supabase = (typeof supabase !== 'undefined') ? null : supabaseJs.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // --- SUPABASE CONFIG ---
+    const S_URL = "https://rccwtttftdgpbzkromux.supabase.co";
+    const S_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjY3d0dHRmdGRncGJ6a3JvbXV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwMzk0MDQsImV4cCI6MjA4NzYxNTQwNH0.W1qs1oF3IbVM7Uph2wKKIJs-W09uNwwhJ2TFFpdT3n4"; // <--- PEGA TU KEY AQUÍ
+    
+    // Cambiamos el nombre de la variable para evitar colisiones
+    const _supabase = supabase.createClient(S_URL, S_KEY);
 
-    // --- DATOS ---
+    // --- DATA ---
     const dataAves = [
         {nombre: 'Carpintero', img: 'https://i.ibb.co/kg3YG0dP/large.jpg', desc: 'Ingeniero forestal que controla plagas.'},
         {nombre: 'Sangre toro', img: 'https://i.ibb.co/NnGg1Q86/900.jpg', desc: 'Símbolo de vitalidad y pasión llanera.'},
@@ -198,10 +200,11 @@
 
     let userVoto = { ci: '', nombre: '', edad: '', genero: '', sector: '', ws: '', ave: null, flor: null };
 
-    // --- LÓGICA ---
+    // --- FUNCIONES DE NAVEGACIÓN ---
     function nextScreen(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
+        const target = document.getElementById(id);
+        if (target) target.classList.add('active');
         window.scrollTo(0,0);
     }
 
@@ -213,7 +216,9 @@
         userVoto.sector = document.getElementById('v-sector').value;
         userVoto.ws = document.getElementById('v-country').value + document.getElementById('v-ws').value;
 
-        if(!userVoto.ci || !userVoto.nombre || !userVoto.sector) return alert("Complete los campos obligatorios.");
+        if(!userVoto.ci || !userVoto.nombre || !userVoto.sector || !userVoto.edad) {
+            return alert("Por favor, complete todos los campos obligatorios.");
+        }
         nextScreen('screen-selector');
     }
 
@@ -226,8 +231,8 @@
             const card = document.createElement('div');
             card.className = "glass-card"; card.style.padding = "20px";
             card.innerHTML = `
-                <div class="img-container"><img src="${item.img}"><button class="zoom-btn" onclick="viewImg('${item.img}')"><i class="fas fa-search"></i></button></div>
-                <h3 style="color:#ffd700;">${item.nombre}</h3><p style="font-size:0.85rem; height:45px;">${item.desc}</p>
+                <div class="img-container"><img src="${item.img}"><button class="zoom-btn" onclick="viewImg('${item.img}')"><i class="fas fa-expand"></i></button></div>
+                <h3 style="color:#ffd700; margin:15px 0 5px 0;">${item.nombre}</h3><p style="font-size:0.85rem; height:45px;">${item.desc}</p>
                 <button class="btn-action" onclick="setVoto('${tipo}', '${item.nombre}')">SELECCIONAR</button>`;
             container.appendChild(card);
         });
@@ -240,27 +245,30 @@
         nextScreen((userVoto.ave && userVoto.flor) ? 'screen-final' : 'screen-selector');
     }
 
-    function viewImg(url) { document.getElementById('modal-img').src = url; document.getElementById('image-modal').style.display = 'flex'; }
+    function viewImg(url) { 
+        document.getElementById('modal-img').src = url; 
+        document.getElementById('image-modal').style.display = 'flex'; 
+    }
     
     function unlockBtn() { 
         const b = document.getElementById('finish-v');
-        setTimeout(() => { b.disabled = false; b.style.background = "#27ae60"; }, 2000); 
+        setTimeout(() => { b.disabled = false; b.style.background = "#27ae60"; }, 2500); 
     }
 
     async function enviarASupabase() {
         const btn = document.getElementById('finish-v');
-        btn.disabled = true; btn.innerText = "PROCESANDO...";
+        btn.disabled = true; btn.innerText = "REGISTRANDO...";
 
-        const { error } = await supabase.from('votos').insert([{
-            cedula: userVoto.ci, nombre_completo: userVoto.nombre, edad: userVoto.edad,
+        const { error } = await _supabase.from('votos').insert([{
+            cedula: userVoto.ci, nombre_completo: userVoto.nombre, edad: parseInt(userVoto.edad),
             genero: userVoto.genero, sector: userVoto.sector, whatsapp: userVoto.ws,
             voto_ave: userVoto.ave, voto_flor: userVoto.flor
         }]);
 
         if (error) {
-            if(error.code === '23505') alert("ERROR: Esta cédula ya ha registrado un voto.");
-            else alert("Error de conexión: " + error.message);
-            btn.disabled = false; btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> FINALIZAR';
+            if(error.code === '23505') alert("Esta cédula ya registró su voto.");
+            else alert("Error: " + error.message);
+            btn.disabled = false; btn.innerText = "FINALIZAR MI VOTO";
         } else {
             nextScreen('screen-results');
             mostrarEstadisticas();
@@ -268,11 +276,11 @@
     }
 
     async function mostrarEstadisticas() {
-        const { data } = await supabase.from('votos').select('voto_ave, voto_flor');
+        const { data } = await _supabase.from('votos').select('voto_ave, voto_flor');
         const counts = (arr, key) => arr.reduce((a, c) => (a[c[key]] = (a[c[key]] || 0) + 1, a), {});
         
-        const avesMap = counts(data, 'voto_ave');
-        const floresMap = counts(data, 'voto_flor');
+        const avesMap = counts(data || [], 'voto_ave');
+        const floresMap = counts(data || [], 'voto_flor');
 
         new Chart(document.getElementById('chartAves'), {
             type: 'doughnut',
