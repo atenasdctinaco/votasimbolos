@@ -11,9 +11,7 @@
     
     <style>
         :root {
-            --azul-tinaco: #1a2980; 
-            --rojo-tinaco: #ff0000;
-            --blanco: #ffffff;
+            --azul-tinaco: #1a2980; --rojo-tinaco: #ff0000; --blanco: #ffffff;
             --glass: rgba(255, 255, 255, 0.12);
         }
         
@@ -50,7 +48,7 @@
 
         /* --- IMÁGENES --- */
         .img-container {
-            width: 100%; height: 250px; background: rgba(0,0,0,0.3);
+            width: 100%; height: 200px; background: rgba(0,0,0,0.3);
             border-radius: 20px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
         .img-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
@@ -78,7 +76,11 @@
         footer a { color: #ffd700; text-decoration: none; font-weight: 700; }
         footer p { max-width: 800px; margin: 10px auto; line-height: 1.6; }
 
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; width: 100%; max-width: 1200px; padding-bottom: 50px;}
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; max-width: 1200px; padding-bottom: 50px;}
+        
+        /* Tooltip de retorno */
+        .return-hint { font-size: 0.8rem; color: #ffd700; margin-top: 10px; display: none; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
     </style>
 </head>
 <body>
@@ -86,7 +88,7 @@
 <section id="screen-intro" class="screen active">
     <div class="glass-card" style="max-width: 750px; padding: 40px; text-align: center;">
         <h2 style="letter-spacing: 3px; font-weight: 300;">ALCALDÍA DE TINACO</h2>
-        <h1 style="font-size: 2.8rem; margin: 10px 0;">Identidad Natural</h1>
+        <h1 style="font-size: 2.5rem; margin: 10px 0;">Identidad Natural</h1>
         <p>Votación ciudadana para la elección de nuestros Símbolos Naturales.</p>
         <br>
         <button class="btn-action" onclick="nextScreen('screen-form')">EMPEZAR VOTACIÓN</button>
@@ -96,18 +98,18 @@
 <section id="screen-form" class="screen">
     <div class="glass-card" style="max-width: 550px; padding: 35px; width: 90%;">
         <h2 style="text-align: center; margin-bottom: 20px;">Datos del Votante</h2>
-        <div class="form-group"><label>Cédula de Identidad *</label><input type="number" id="v-ci" placeholder="Ej: 12345678"></div>
-        <div class="form-group"><label>Nombre Completo *</label><input type="text" id="v-nombre"></div>
+        <div class="form-group"><label>Cédula de Identidad *</label><input type="number" id="v-ci" oninput="saveProgress()"></div>
+        <div class="form-group"><label>Nombre Completo *</label><input type="text" id="v-nombre" oninput="saveProgress()"></div>
         <div class="row">
-            <div class="col-short"><label>Edad *</label><input type="number" id="v-edad"></div>
-            <div class="col-wide"><label>Género *</label><select id="v-genero"><option value="F">Femenino</option><option value="M">Masculino</option><option value="O">Otro</option></select></div>
+            <div class="col-short"><label>Edad *</label><input type="number" id="v-edad" oninput="saveProgress()"></div>
+            <div class="col-wide"><label>Género *</label><select id="v-genero" onchange="saveProgress()"><option value="F">Femenino</option><option value="M">Masculino</option><option value="O">Otro</option></select></div>
         </div>
-        <div class="form-group"><label>Sector de Residencia *</label><input type="text" id="v-sector" placeholder="Nombre de su comunidad"></div>
+        <div class="form-group"><label>Sector de Residencia *</label><input type="text" id="v-sector" oninput="saveProgress()"></div>
         <div class="form-group">
             <label>WhatsApp (Opcional)</label>
             <div class="phone-input">
                 <select id="v-country"><option value="+58" selected>🇻🇪 +58</option></select>
-                <input type="tel" id="v-ws" placeholder="Número">
+                <input type="tel" id="v-ws" oninput="saveProgress()">
             </div>
         </div>
         <button class="btn-action" onclick="validateForm()">CONTINUAR</button>
@@ -115,35 +117,36 @@
 </section>
 
 <section id="screen-selector" class="screen">
-    <h2 style="margin-bottom:30px;">Selecciona una Categoría</h2>
+    <h2 style="margin-bottom:30px; text-align: center;">Categorías de Votación</h2>
     <div class="grid-cards" style="max-width: 800px;">
         <div class="glass-card" style="padding: 40px; text-align: center; cursor: pointer;" onclick="renderVotacion('aves')">
-            <i class="fas fa-feather-alt fa-5x"></i><h3>AVES</h3>
+            <i class="fas fa-feather-alt fa-4x"></i><h3>AVES</h3>
             <div id="check-ave" style="display:none; color: #00ff00; font-weight: bold;">✅ SELECCIONADO</div>
         </div>
         <div class="glass-card" style="padding: 40px; text-align: center; cursor: pointer;" onclick="renderVotacion('flores')">
-            <i class="fas fa-seedling fa-5x"></i><h3>FLORES</h3>
+            <i class="fas fa-seedling fa-4x"></i><h3>FLORES</h3>
             <div id="check-flor" style="display:none; color: #00ff00; font-weight: bold;">✅ SELECCIONADO</div>
         </div>
     </div>
 </section>
 
 <section id="screen-voting" class="screen">
-    <h2 id="vote-title"></h2>
+    <h2 id="vote-title" style="text-align: center;"></h2>
     <div class="grid-cards" id="container-voting"></div>
 </section>
 
 <section id="screen-final" class="screen">
-    <div class="glass-card" style="max-width: 550px; padding: 40px; text-align: center;">
-        <h2 style="margin-bottom: 20px;">Confirmar Voto</h2>
-        <p>Para validar su participación, suscríbase al canal de Epistecnología:</p>
-        <br>
+    <div class="glass-card" style="max-width: 550px; padding: 40px; text-align: center; width: 90%;">
+        <h2 style="margin-bottom: 20px;">Confirmar Participación</h2>
+        <p>1. Suscríbete para validar tu voto:</p>
         <div style="max-width: 250px; margin: auto;">
             <a href="https://www.youtube.com/@epistecnologia?sub_confirmation=1" target="_blank" class="btn-action" style="background: #ff0000; text-decoration: none;" onclick="unlockBtn()">
                 <i class="fab fa-youtube"></i> SUSCRIBIRSE
             </a>
         </div>
+        <p id="return-text" class="return-hint"><i class="fas fa-arrow-left"></i> <b>¡Regresa a esta pestaña para finalizar!</b></p>
         <br>
+        <p>2. Presiona el botón verde al regresar:</p>
         <button id="finish-v" class="btn-action" disabled onclick="enviarASupabase()">
             <i class="fas fa-check-circle"></i> FINALIZAR MI VOTO
         </button>
@@ -153,11 +156,11 @@
 <section id="screen-results" class="screen">
     <div class="glass-card" style="width: 95%; max-width: 1000px; padding: 40px; text-align: center;">
         <h1>Escrutinio Real</h1>
-        <div class="row" style="flex-wrap: wrap; justify-content: center;">
-            <div style="width: 400px;"><canvas id="chartAves"></canvas></div>
-            <div style="width: 400px;"><canvas id="chartFlores"></canvas></div>
+        <div class="row" style="flex-wrap: wrap; justify-content: center; gap: 40px;">
+            <div style="width: 320px;"><canvas id="chartAves"></canvas></div>
+            <div style="width: 320px;"><canvas id="chartFlores"></canvas></div>
         </div>
-        <br><button class="btn-action" style="max-width: 200px; margin: auto;" onclick="location.reload()">INICIO</button>
+        <br><button class="btn-action" style="max-width: 200px; margin: auto;" onclick="resetVotacion()">INICIO</button>
     </div>
 </section>
 
@@ -175,9 +178,7 @@
 <script>
     // --- SUPABASE CONFIG ---
     const S_URL = "https://rccwtttftdgpbzkromux.supabase.co";
-    const S_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjY3d0dHRmdGRncGJ6a3JvbXV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwMzk0MDQsImV4cCI6MjA4NzYxNTQwNH0.W1qs1oF3IbVM7Uph2wKKIJs-W09uNwwhJ2TFFpdT3n4"; // <--- PEGA TU KEY AQUÍ
-    
-    // Cambiamos el nombre de la variable para evitar colisiones
+    const S_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjY3d0dHRmdGRncGJ6a3JvbXV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwMzk0MDQsImV4cCI6MjA4NzYxNTQwNH0.W1qs1oF3IbVM7Uph2wKKIJs-W09uNwwhJ2TFFpdT3n4"; 
     const _supabase = supabase.createClient(S_URL, S_KEY);
 
     // --- DATA ---
@@ -198,24 +199,40 @@
         {nombre: 'Clavelina', img: 'https://i.ibb.co/KpP5FFb3/clavelina-rebecca-niver-z0txuuculfq-unsplash-946793cd-1200x630.jpg', desc: 'Orgullo ornamental tinaquero.'}
     ];
 
-    let userVoto = { ci: '', nombre: '', edad: '', genero: '', sector: '', ws: '', ave: null, flor: null };
+    let userVoto = JSON.parse(localStorage.getItem('userVoto')) || { ci: '', nombre: '', edad: '', genero: '', sector: '', ws: '', ave: null, flor: null };
 
-    // --- FUNCIONES DE NAVEGACIÓN ---
-    function nextScreen(id) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        const target = document.getElementById(id);
-        if (target) target.classList.add('active');
-        window.scrollTo(0,0);
-    }
+    // Recuperar estado al cargar
+    window.onload = () => {
+        if(userVoto.ci) {
+            document.getElementById('v-ci').value = userVoto.ci;
+            document.getElementById('v-nombre').value = userVoto.nombre;
+            document.getElementById('v-edad').value = userVoto.edad;
+            document.getElementById('v-genero').value = userVoto.genero;
+            document.getElementById('v-sector').value = userVoto.sector;
+            document.getElementById('v-ws').value = userVoto.ws.replace('+58', '');
+        }
+        if(userVoto.ave) document.getElementById('check-ave').style.display='block';
+        if(userVoto.flor) document.getElementById('check-flor').style.display='block';
+    };
 
-    function validateForm() {
+    function saveProgress() {
         userVoto.ci = document.getElementById('v-ci').value;
         userVoto.nombre = document.getElementById('v-nombre').value;
         userVoto.edad = document.getElementById('v-edad').value;
         userVoto.genero = document.getElementById('v-genero').value;
         userVoto.sector = document.getElementById('v-sector').value;
         userVoto.ws = document.getElementById('v-country').value + document.getElementById('v-ws').value;
+        localStorage.setItem('userVoto', JSON.stringify(userVoto));
+    }
 
+    function nextScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function validateForm() {
+        saveProgress();
         if(!userVoto.ci || !userVoto.nombre || !userVoto.sector || !userVoto.edad) {
             return alert("Por favor, complete todos los campos obligatorios.");
         }
@@ -232,7 +249,7 @@
             card.className = "glass-card"; card.style.padding = "20px";
             card.innerHTML = `
                 <div class="img-container"><img src="${item.img}"><button class="zoom-btn" onclick="viewImg('${item.img}')"><i class="fas fa-expand"></i></button></div>
-                <h3 style="color:#ffd700; margin:15px 0 5px 0;">${item.nombre}</h3><p style="font-size:0.85rem; height:45px;">${item.desc}</p>
+                <h3 style="color:#ffd700; margin:15px 0 5px 0;">${item.nombre}</h3><p style="font-size:0.8rem; height:45px;">${item.desc}</p>
                 <button class="btn-action" onclick="setVoto('${tipo}', '${item.nombre}')">SELECCIONAR</button>`;
             container.appendChild(card);
         });
@@ -242,17 +259,18 @@
     function setVoto(tipo, nombre) {
         if(tipo === 'aves') { userVoto.ave = nombre; document.getElementById('check-ave').style.display='block'; }
         else { userVoto.flor = nombre; document.getElementById('check-flor').style.display='block'; }
+        saveProgress();
         nextScreen((userVoto.ave && userVoto.flor) ? 'screen-final' : 'screen-selector');
     }
 
-    function viewImg(url) { 
-        document.getElementById('modal-img').src = url; 
-        document.getElementById('image-modal').style.display = 'flex'; 
-    }
-    
     function unlockBtn() { 
+        document.getElementById('return-text').style.display = 'block';
         const b = document.getElementById('finish-v');
-        setTimeout(() => { b.disabled = false; b.style.background = "#27ae60"; }, 2500); 
+        setTimeout(() => { 
+            b.disabled = false; 
+            b.style.background = "#27ae60"; 
+            b.innerHTML = '<i class="fas fa-check-circle"></i> ¡LISTO! FINALIZAR VOTO';
+        }, 3000); 
     }
 
     async function enviarASupabase() {
@@ -270,29 +288,39 @@
             else alert("Error: " + error.message);
             btn.disabled = false; btn.innerText = "FINALIZAR MI VOTO";
         } else {
+            localStorage.removeItem('userVoto');
             nextScreen('screen-results');
             mostrarEstadisticas();
         }
     }
 
+    function resetVotacion() {
+        localStorage.removeItem('userVoto');
+        location.reload();
+    }
+
     async function mostrarEstadisticas() {
         const { data } = await _supabase.from('votos').select('voto_ave, voto_flor');
         const counts = (arr, key) => arr.reduce((a, c) => (a[c[key]] = (a[c[key]] || 0) + 1, a), {});
-        
         const avesMap = counts(data || [], 'voto_ave');
         const floresMap = counts(data || [], 'voto_flor');
 
         new Chart(document.getElementById('chartAves'), {
             type: 'doughnut',
             data: { labels: Object.keys(avesMap), datasets: [{ data: Object.values(avesMap), backgroundColor: ['#1a2980','#ff0000','#ffd700','#27ae60','#8e44ad'] }] },
-            options: { plugins: { title: { display: true, text: 'Votos Aves', color: '#fff' } } }
+            options: { plugins: { title: { display: true, text: 'Escrutinio Aves', color: '#fff' } } }
         });
 
         new Chart(document.getElementById('chartFlores'), {
             type: 'bar',
             data: { labels: Object.keys(floresMap), datasets: [{ label: 'Votos', data: Object.values(floresMap), backgroundColor: '#ffd700' }] },
-            options: { plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#fff' } }, x: { ticks: { color: '#fff' } } } }
+            options: { plugins: { legend: { display: false }, title: { display: true, text: 'Escrutinio Flores', color: '#fff' } }, scales: { y: { ticks: { color: '#fff' } }, x: { ticks: { color: '#fff' } } } }
         });
+    }
+
+    function viewImg(url) { 
+        document.getElementById('modal-img').src = url; 
+        document.getElementById('image-modal').style.display = 'flex'; 
     }
 </script>
 </body>
