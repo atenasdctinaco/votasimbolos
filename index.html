@@ -190,7 +190,7 @@
 </section>
 
 <footer>
-    <img src="https://i.ibb.co/hFRyKrxY/logo-epist-v3-1x1-c.png" alt="Logo">
+    <img src="https://i.ibb.co/hFRyKrxY/logo-epist-v3-1x1-c.png" alt="Logo" onclick="accesoSecreto()" style="cursor: pointer;">
     <p>Desarrollado por <a href="https://epistecnologia.com/" target="_blank" style="color:var(--oro)">Epistecnología</a></p>
     <p>Una plataforma y revista de divulgación científica y culturas, del tinaquero <a href="https://epistecnologia.com/@henry" target="_blank" style="color:var(--oro)">Henry Adolfo Márquez Mercado</a></p>
 </footer>
@@ -342,6 +342,29 @@
             }
         }
     });
+
+    let toquesAdmin = 0;
+
+    function accesoSecreto() {
+        toquesAdmin++;
+        
+        // Si llega a 5 toques
+        if (toquesAdmin === 5) {
+            const pass = prompt("Acceso Administrativo. Ingrese contraseña:");
+            
+            if (pass === "tinaco2026") { // Aquí pones tu clave
+                mostrarResultadosFinales();
+            } else {
+                alert("Clave incorrecta");
+            }
+            
+            // Reiniciamos el contador después del intento
+            toquesAdmin = 0; 
+        }
+    
+        // Si deja de tocar por 3 segundos, se reinicia el contador por seguridad
+        setTimeout(() => { toquesAdmin = 0; }, 3000);
+    }
 </script>
 </body>
 </html>
