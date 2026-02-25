@@ -11,8 +11,12 @@
     
     <style>
         :root {
-            --azul-tinaco: #1a2980; --rojo-tinaco: #ff0000; --blanco: #ffffff;
-            --glass: rgba(255, 255, 255, 0.12); --oro: #ffd700;
+            --azul-tinaco: #1a2980; 
+            --rojo-tinaco: #ff0000; 
+            --blanco: #ffffff;
+            --glass: rgba(255, 255, 255, 0.12); 
+            --oro: #ffd700;
+            { box-sizing: border-box; 
         }
         
         body {
@@ -46,10 +50,27 @@
         .disclaimer { font-size: 0.75rem; color: #ccc; margin-top: 5px; line-height: 1.2; }
 
         .btn-action {
-            background: var(--rojo-tinaco); color: white; border: none; padding: 15px 25px;
-            border-radius: 20px; cursor: pointer; font-weight: 700; transition: 0.3s; 
-            width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
-            text-transform: uppercase; text-decoration: none;
+            background: var(--rojo-tinaco); 
+            color: white; 
+            border: none; 
+            padding: 15px;
+            border-radius: 20px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            transition: 0.3s; 
+            width: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px;
+            text-transform: uppercase; 
+            text-decoration: none;
+        }
+
+        .chart-wrapper {
+            width: 100%;
+            max-width: 450px; /* Gráficos más grandes */
+            margin: 20px auto;
         }
         .btn-action:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
 
@@ -137,10 +158,17 @@
         <div id="subscribe-box" style="display:none;">
             <i class="fas fa-check-circle fa-4x" style="color:#27ae60"></i>
             <h2>¡Voto registrado!</h2>
-            <p>Para ver los resultados en vivo y apoyar el proyecto, suscríbete a Epistecnología:</p>
-            <a href="https://www.youtube.com/@epistecnologia?sub_confirmation=1" target="_blank" class="btn-action" style="background:#ff0000;" onclick="showResultsBtn()">
-                <i class="fab fa-youtube"></i> SUSCRIBIRSE
-            </a>
+            <p>Para ver los resultados en vivo y apoyar el proyecto:</p>
+            
+            <p style="color:var(--oro); font-weight:bold; margin:15px 0;">
+                1. Suscríbete al canal <br> 
+                2. Regresa a esta pestaña para ver los resultados
+            </p>
+            
+            <div style="padding: 0 10px;"> <a href="https://www.youtube.com/@epistecnologia?sub_confirmation=1" target="_blank" class="btn-action" style="background:#ff0000;" onclick="showResultsBtn()">
+                    <i class="fab fa-youtube"></i> SUSCRIBIRSE
+                </a>
+            </div>
             <br>
             <button id="btn-ver-resultados" class="btn-action" style="background:var(--azul-tinaco); display:none;" onclick="mostrarResultadosFinales()">
                 VER RESULTADOS EN VIVO
@@ -219,8 +247,8 @@
             card.className = "glass-card";
             card.innerHTML = `
                 <div class="img-container"><img src="${item.img}"></div>
-                <h3>${item.nombre}</h3>
-                <button class="btn-action" onclick="setVoto('${tipo}', '${item.nombre}')">SELECCIONAR</button>
+                <h3 style="color:var(--oro);">${item.nombre}</h3>
+                <p style="font-size:0.85rem; min-height:40px;">${item.desc}</p> <button class="btn-action" onclick="setVoto('${tipo}', '${item.nombre}')">SELECCIONAR</button>
             `;
             container.appendChild(card);
         });
@@ -277,13 +305,31 @@
         new Chart(document.getElementById('chartAves'), {
             type: 'doughnut',
             data: { labels: Object.keys(avesMap), datasets: [{ data: Object.values(avesMap), backgroundColor: ['#1a2980','#ff0000','#ffd700','#27ae60','#8e44ad'] }] },
-            options: { plugins: { title: { display: true, text: 'Votos Aves', color: '#fff' } } }
+            options: {
+                plugins: {
+                    legend: { labels: { color: '#fff', font: { size: 14 } } }, // Leyenda más grande
+                    title: { display: true, text: 'Votos Aves', color: '#fff', font: { size: 18 } } // Título más grande
+                },
+                scales: {
+                    y: { ticks: { color: '#fff', font: { size: 14 } } }, // Números del eje Y
+                    x: { ticks: { color: '#fff', font: { size: 14 } } }  // Nombres del eje X
+                }
+            }
         });
 
         new Chart(document.getElementById('chartFlores'), {
             type: 'bar',
             data: { labels: Object.keys(floresMap), datasets: [{ label: 'Votos', data: Object.values(floresMap), backgroundColor: '#ffd700' }] },
-            options: { scales: { y: { ticks: { color: '#fff' } }, x: { ticks: { color: '#fff' } } } }
+            options: {
+                plugins: {
+                    legend: { labels: { color: '#fff', font: { size: 14 } } }, // Leyenda más grande
+                    title: { display: true, text: 'Votos Aves', color: '#fff', font: { size: 18 } } // Título más grande
+                },
+                scales: {
+                    y: { ticks: { color: '#fff', font: { size: 14 } } }, // Números del eje Y
+                    x: { ticks: { color: '#fff', font: { size: 14 } } }  // Nombres del eje X
+                }
+            }
         });
     }
 </script>
