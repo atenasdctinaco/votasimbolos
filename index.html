@@ -357,35 +357,53 @@
     async function mostrarEstadisticas() {
         const { data } = await _supabase.from('votos').select('voto_ave, voto_flor');
         const counts = (arr, key) => arr.reduce((a, c) => (a[c[key]] = (a[c[key]] || 0) + 1, a), {});
+        
         const avesMap = counts(data || [], 'voto_ave');
         const floresMap = counts(data || [], 'voto_flor');
 
+        // Gráfico de Aves (Doughnut)
         new Chart(document.getElementById('chartAves'), {
             type: 'doughnut',
-            data: { labels: Object.keys(avesMap), datasets: [{ data: Object.values(avesMap), backgroundColor: ['#1a2980','#ff0000','#ffd700','#27ae60','#8e44ad'] }] },
+            data: { 
+                labels: Object.keys(avesMap), 
+                datasets: [{ 
+                    data: Object.values(avesMap), 
+                    backgroundColor: ['#1a2980','#ff0000','#ffd700','#27ae60','#8e44ad'] 
+                }] 
+            },
             options: {
                 plugins: {
-                    legend: { labels: { color: '#fff', font: { size: 14 } } }, // Leyenda más grande
-                    title: { display: true, text: 'Votos Aves', color: '#fff', font: { size: 18 } } // Título más grande
-                },
-                scales: {
-                    y: { ticks: { color: '#fff', font: { size: 14 } } }, // Números del eje Y
-                    x: { ticks: { color: '#fff', font: { size: 14 } } }  // Nombres del eje X
+                    legend: { labels: { color: '#fff', font: { size: 14 } } },
+                    title: { display: true, text: 'Votos Aves', color: '#fff', font: { size: 18 } }
                 }
             }
         });
 
+        // Gráfico de Flores (Bar) - CORREGIDO
         new Chart(document.getElementById('chartFlores'), {
             type: 'bar',
-            data: { labels: Object.keys(floresMap), datasets: [{ label: 'Votos', data: Object.values(floresMap), backgroundColor: '#ffd700' }] },
+            data: { 
+                labels: Object.keys(floresMap), 
+                datasets: [{ 
+                    label: 'Cantidad de Votos', // Antes decía Votos Aves
+                    data: Object.values(floresMap), 
+                    backgroundColor: '#ffd700' 
+                }] 
+            },
             options: {
+                responsive: true,
                 plugins: {
-                    legend: { labels: { color: '#fff', font: { size: 14 } } }, // Leyenda más grande
-                    title: { display: true, text: 'Votos Flores', color: '#fff', font: { size: 18 } } // Título más grande
+                    legend: { display: false }, // Ocultamos leyenda en barras para más espacio
+                    title: { display: true, text: 'Votos Flores', color: '#fff', font: { size: 18 } } // Título corregido
                 },
                 scales: {
-                    y: { ticks: { color: '#fff', font: { size: 14 } } }, // Números del eje Y
-                    x: { ticks: { color: '#fff', font: { size: 14 } } }  // Nombres del eje X
+                    y: { 
+                        beginAtZero: true, // Asegura que empiece en 0
+                        ticks: { color: '#fff', font: { size: 14 }, stepSize: 1 } 
+                    },
+                    x: { 
+                        ticks: { color: '#fff', font: { size: 14 } } 
+                    }
                 }
             }
         });
