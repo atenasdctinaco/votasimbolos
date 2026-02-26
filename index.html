@@ -234,14 +234,30 @@
 </section>
 
 <section id="screen-results" class="screen">
-    <div class="glass-card" style="width: 95%; max-width: 1000px; text-align:center;">
-        <img src="https://i.ibb.co/GvJh9bVz/Logo-Tinaco01.png" alt="Alcaldía de Tinaco" style="width: 100%; max-width: 250px; margin-bottom: 15px;">
-        <h1>Escrutinio en Tiempo Real</h1>
-        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:30px;">
-            <div style="width:300px;"><canvas id="chartAves"></canvas></div>
-            <div style="width:300px;"><canvas id="chartFlores"></canvas></div>
+    <div class="glass-card" style="width: 95%; max-width: 800px; text-align:center; padding-bottom: 40px;">
+        
+        <img src="https://i.ibb.co/GvJh9bVz/Logo-Tinaco01.png" alt="Alcaldía" style="width: 180px; margin-bottom: 20px;">
+        
+        <h2 style="color:var(--oro); margin-top:0;">¡Gracias por participar!</h2>
+        
+        <p style="font-size: 1rem; line-height: 1.5; color: #eee; margin-bottom: 25px; padding: 0 15px;">
+            Desde la <b>Alcaldía de Tinaco</b> te pedimos invitar a otros a participar en esta consulta que fortalecerá nuestra identidad. ¡Tu voz es nuestro futuro!
+        </p>
+
+        <div class="chart-container-wrapper">
+            <div class="chart-box"><canvas id="chartAves"></canvas></div>
+            <div class="chart-box"><canvas id="chartFlores"></canvas></div>
         </div>
-        <br><button class="btn-action" style="width:200px; margin:auto;" onclick="location.reload()">INICIO</button>
+
+        <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px; align-items: center;">
+            <button class="btn-action" style="background:#25d366; max-width: 300px;" onclick="invitarAmigos()">
+                <i class="fas fa-share-alt"></i> INVITAR A OTROS
+            </button>
+            
+            <button onclick="location.reload()" style="background: transparent; border: 1px solid #fff; color: #fff; padding: 10px 20px; border-radius: 15px; cursor: pointer; font-size: 0.8rem;">
+                CERRAR Y VOLVER AL INICIO
+            </button>
+        </div>
         </br>
         <div class="brand-float">
             <span>Resultados de la consulta 2026 | Símbolos Naturales</span>
@@ -451,6 +467,23 @@
         // Si deja de tocar por 3 segundos, se reinicia el contador por seguridad
         setTimeout(() => { toquesAdmin = 0; }, 3000);
     }
+
+    function invitarAmigos() {
+    const textoCompartir = "¡Hola! Te invito a participar en la elección de los Símbolos Naturales de nuestro Municipio Tinaco. ¡Tu voto cuenta para nuestra identidad! Vota aquí: ";
+    const url = window.location.href;
+
+    if (navigator.share) {
+        // Esto abre el menú nativo del celular (WhatsApp, Instagram, etc.)
+        navigator.share({
+            title: 'Símbolos Naturales Tinaco',
+            text: textoCompartir,
+            url: url,
+        }).catch(console.error);
+    } else {
+        // Opción de respaldo si el navegador no soporta compartir (PC antiguas)
+        alert("Copia y comparte este enlace: " + url);
+    }
+}
 </script>
 </body>
 </html>
