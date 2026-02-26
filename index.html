@@ -69,10 +69,23 @@
             text-decoration: none;
         }
 
-        .chart-wrapper {
+        .chart-container-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
             width: 100%;
-            max-width: 450px; /* Gráficos más grandes */
-            margin: 20px auto;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .chart-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 15px;
+            width: 100%; /* Ocupa todo el ancho en móvil */
+            max-width: 400px; /* Tamaño máximo en PC */
+            min-height: 350px;
         }
         .btn-action:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
 
@@ -350,49 +363,57 @@
         
         const avesMap = counts(data || [], 'voto_ave');
         const floresMap = counts(data || [], 'voto_flor');
-
-        // Gráfico de Aves (Doughnut)
+    
+        // Gráfico de Aves (Circular - Se lee bien en cualquier lado)
         new Chart(document.getElementById('chartAves'), {
             type: 'doughnut',
-            data: { 
-                labels: Object.keys(avesMap), 
-                datasets: [{ 
-                    data: Object.values(avesMap), 
-                    backgroundColor: ['#1a2980','#ff0000','#ffd700','#27ae60','#8e44ad'] 
-                }] 
-            },
-            options: {
-                plugins: {
-                    legend: { labels: { color: '#fff', font: { size: 14 } } },
-                    title: { display: true, text: 'Votos Aves', color: '#fff', font: { size: 18 } }
-                }
-            }
-        });
-
-        // Gráfico de Flores (Bar) - CORREGIDO
-        new Chart(document.getElementById('chartFlores'), {
-            type: 'bar',
-            data: { 
-                labels: Object.keys(floresMap), 
-                datasets: [{ 
-                    label: 'Cantidad de Votos', // Antes decía Votos Aves
-                    data: Object.values(floresMap), 
-                    backgroundColor: '#ffd700' 
-                }] 
+            data: {
+                labels: Object.keys(avesMap),
+                datasets: [{
+                    data: Object.values(avesMap),
+                    backgroundColor: ['#1a2980', '#ff0000', '#ffd700', '#27ae60', '#8e44ad'],
+                    borderWidth: 0
+                }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
-                    legend: { display: false }, // Ocultamos leyenda en barras para más espacio
-                    title: { display: true, text: 'Votos Flores', color: '#fff', font: { size: 18 } } // Título corregido
+                    legend: { position: 'bottom', labels: { color: '#fff', padding: 20 } },
+                    title: { display: true, text: 'PREFERENCIA DE AVES', color: '#ffd700', font: { size: 16, weight: 'bold' } }
+                }
+            }
+        });
+    
+        // Gráfico de Flores (Barras Horizontales - LA MEJOR SOLUCIÓN)
+        new Chart(document.getElementById('chartFlores'), {
+            type: 'bar',
+            data: {
+                labels: Object.keys(floresMap),
+                datasets: [{
+                    label: 'Votos',
+                    data: Object.values(floresMap),
+                    backgroundColor: '#feec42',
+                    borderRadius: 10
+                }]
+            },
+            options: {
+                indexAxis: 'y', // <--- ESTO LO HACE HORIZONTAL
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: 'VOTOS POR FLOR', color: '#ffd700', font: { size: 16, weight: 'bold' } }
                 },
                 scales: {
-                    y: { 
-                        beginAtZero: true, // Asegura que empiece en 0
-                        ticks: { color: '#fff', font: { size: 14 }, stepSize: 1 } 
-                    },
                     x: { 
-                        ticks: { color: '#fff', font: { size: 14 } } 
+                        beginAtZero: true, 
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        ticks: { color: '#fff', stepSize: 1 } 
+                    },
+                    y: { 
+                        grid: { display: false },
+                        ticks: { color: '#fff', font: { size: 12 } } 
                     }
                 }
             }
